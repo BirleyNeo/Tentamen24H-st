@@ -21,8 +21,8 @@ def Add_user():
     user = {
         "firstname": input("skriv inn fornavn: "), #fornavn
         "lastname": input("skriv inn etternavn: "), #etternavn
-        "telefonnr": input("skriv inn telefon nummeret: "), #telefon nr
-        "address": input("skriv inn adressen: "), #adressen
+        "antallPassasjere": input("skriv inn antall passasjerer: "), #telefon nr
+        "dager": input("skriv inn antall dager bussen kommer til å bli brukt: "), #adressen
         "epost": input("skriv inn epost: "), #epost
         "LagtTil": datetime.datetime.now().strftime("%c") #dato og klokkeslettet
     }
