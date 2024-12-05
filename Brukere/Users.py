@@ -14,7 +14,7 @@ def dumpJson(dumpObj, path):
         json.dump(dumpObj, file, indent=4)
 
 #det sier hvilken json fil vi skal lagre hva i
-users = loadJson("Repetisjon/users.json")
+users = loadJson("Brukere/lagring.json")
 
 #lag ny bruker
 def Add_user():
@@ -24,12 +24,22 @@ def Add_user():
         "antallPassasjere": input("skriv inn antall passasjerer: "), #telefon nr
         "dager": input("skriv inn antall dager bussen kommer til å bli brukt: "), #adressen
         "epost": input("skriv inn epost: "), #epost
-        "LagtTil": datetime.datetime.now().strftime("%c") #dato og klokkeslettet
+        "BestillingsDato": datetime.datetime.now().strftime("%c"), #dato og klokkeslettet
+        "TildeltBuss": None,
+        "TotalPris": None,
     }
     #lagre brukere
     users.append(user)
     dumpJson(users, "Brukere/lagring.json") 
-    print(user["firstname"] + " er lagt til som en ny user!")
+    print(user["firstname"] + " har lagt inn en bestilling!")
+
+#funksjon til å bestille en buss
+def buss():
+    
+
+#List ut bestillte bussturer
+#Fjerne eller fullføre en registrert bestilling
+
 
 #list ut alle brukere med fornavnet
 def All_users():
@@ -40,9 +50,9 @@ def All_users():
 def menu():
     print("----- User Menu -----")
     print("---------------------")
-    print("1. legg til ny user")
-    print("2. list ut alle brukere")
-    print("0. slutt programmet")
+    print("1. Legg til users")
+    print("2. List ut alle brukere")
+    print("0. Slutt programmet")
     valg = input("velg noe ifra menyen: ")
     return valg
 
