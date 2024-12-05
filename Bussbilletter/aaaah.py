@@ -20,21 +20,32 @@ def bestill():
     bruker = {
         "firstname": input("skriv inn fornavn: "), #fornavn
         "lastname": input("skriv inn etternavn: "), #etternavn
-        "antallPassasjere": input("skriv inn antall passasjerer: "), #Passasjerer
-        "antallDager": input("skriv inn antall dager bussen kommer til å bli brukt: "), #dagesgebyr
-        "KmPris": input("hvor langt skal bussen kjøre? skriv i km: "), #km gebyr
+        "antallPassasjere": int(input("skriv inn antall passasjerer: ")), #Passasjerer
+        "antallDager": int(input("skriv inn antall dager bussen kommer til å bli brukt: ")), #dagesgebyr
+        "KmPris": int(input("hvor langt skal bussen kjøre? skriv i km: ")), #km gebyr
         "BestillingsDato": datetime.datetime.now().strftime("%c"), #dato og klokkeslettet
-        "ValgtBuss": input("skriv inn hvilken buss du vil ta: "),
+        "ValgtBuss": None,
         "FullførtBestilling": False,
-        "TotalPris": busses["pris"] * "antallDager" + 90 * "KmPris",
+        "TotalPris": None,
     }
-    if bruker("antallPassasjere") > busses["antallSeter"]:
-        print("nuh uh")
-    elif bruker("antallPassasjere") <= busses["antallSeter"]:
-        print(bruker["fornavn"] + " har lagt inn en bestilling!")
+
+    valgtBuss = input("Velg en buss (skriv navnet): ").lower()
+    for buss in busses:
+        if valgtBuss == buss["bussNavn"].lower():
+            if bruker["antallPassasjere"] > buss["antallSeter"]:
+                print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.")
+                return
+
+            bruker["valgtBuss"] = buss["bussNavn"]
+            bruker["KmPris"] = int(buss["pris"]) * bruker["antallDager"] + 90 * bruker["KmPris"]
+            break
+    else:
+        print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
+        return
 
     brukere.append(bruker)
     dumpJson(brukere, "Bussbilletter/billetter.json")
+    print(f"Bestilling for {bruker['firstname']} {bruker['lastname']} er lagt til!")
 
 
 #funksjon for å legge til busser

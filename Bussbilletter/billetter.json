@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "firstname": "Odin",
+        "lastname": "Johansen",
+        "antallPassasjere": 5,
+        "antallDager": 8,
+        "KmPris": 18100,
+        "BestillingsDato": "Thu Dec  5 13:11:22 2024",
+        "ValgtBuss": null,
+        "Fullf\u00f8rtBestilling": false,
+        "TotalPris": null,
+        "valgtBuss": "Peter"
+    }
+]
