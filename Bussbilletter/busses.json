@@ -1,0 +1,58 @@
+[
+    {
+        "bussNavn": "Peter",
+        "bussID": "2c8dcbda-1b3d-44ef-a042-19750b61573f",
+        "antallSeter": "7",
+        "ledig": true,
+        "pris": "1250"
+    },
+    {
+        "bussNavn": "Albert",
+        "bussID": "5f439af8-15ee-4e3f-b584-3b1a99d6a99a",
+        "antallSeter": "7",
+        "ledig": true,
+        "pris": "1250"
+    },
+    {
+        "bussNavn": "Kåre",
+        "bussID": "2a87badb-55f9-4a2e-9d07-bbe04096bbe6",
+        "antallSeter": "7",
+        "ledig": true,
+        "pris": "1250"
+    },
+    {
+        "bussNavn": "Fabian",
+        "bussID": "5230b527-fc31-4466-bc5d-73cb3b6ffa90",
+        "antallSeter": "15",
+        "ledig": true,
+        "pris": "1600"
+    },
+    {
+        "bussNavn": "Spiderman",
+        "bussID": "569d3c6d-ac71-4f0c-9ab9-234af3bcabc6",
+        "antallSeter": "15",
+        "ledig": true,
+        "pris": "1600"
+    },
+    {
+        "bussNavn": "Batman",
+        "bussID": "8f0542ac-2b19-42c3-9751-c9a9345cebff",
+        "antallSeter": "15",
+        "ledig": true,
+        "pris": "1600"
+    },
+    {
+        "bussNavn": "Superman",
+        "bussID": "2b762d93-9744-46ce-b093-3742adf2663d",
+        "antallSeter": "23",
+        "ledig": true,
+        "pris": "1900"
+    },
+    {
+        "bussNavn": "Joankler",
+        "bussID": "7b61b82e-6562-49b1-94e6-06c33acdab85",
+        "antallSeter": "23",
+        "ledig": true,
+        "pris": "1900"
+    }
+]
