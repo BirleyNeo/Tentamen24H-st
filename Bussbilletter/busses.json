@@ -10,7 +10,7 @@
         "bussNavn": "Albert",
         "bussID": "5f439af8-15ee-4e3f-b584-3b1a99d6a99a",
         "antallSeter": 7,
-        "ledig": true,
+        "ledig": false,
         "pris": "1250"
     },
     {

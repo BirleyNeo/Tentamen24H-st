@@ -1,12 +1,13 @@
-import json
+import json 
 import datetime
 import uuid
 
+#å få oppdatere json filen
 def loadJson(path):
     with open(path, "r") as file:
         return json.load(file)
 
-##å kaste inn alle nye brukere
+#å kaste inn alle nye brukere
 def dumpJson(dumpObj, path):
     with open(path, "w") as file:
         json.dump(dumpObj, file, indent=4)
@@ -20,52 +21,48 @@ def bestill():
     bruker = {
         "fornavn": input("Skriv fornavnet ditt her: "),
         "etternavn": input("Skriv etternavnet ditt her: "),
-        "antallPassasjerer": int(input("Skriv antall passasjerer: ")),
-        "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")),
-        "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")),
-        "valgtBuss": None,
-        "totalpris": None,
-        "turFullført": False,
-        "datoForBestilling": datetime.datetime.now().strftime("%c")
+        "antallPassasjerer": int(input("Skriv antall passasjerer: ")), #hvor mange folk skal gå i bussen
+        "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")), #hvor mange dager bussen kommer til å bli brukt
+        "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")), #hvor langt bussen trenger å kjøre, til å finne prisen per km
+        "valgtBuss": None, #bussen man kommer å velge ut (forskjellige seter, ...)
+        "totalpris": None, #prisen usern trenger å betale; regner ut km-prisen og prisen per dagen
+        "turFullført": False, #om turen har blitt gjort eller ikke
+        "datoForBestilling": datetime.datetime.now().strftime("%c") #når tid bestilling ble bestillt
     }
 
-    valgtBuss = input("Velg en buss (skriv navnet): ").lower()
+    valgtBuss = input("Velg en buss (skriv navnet): ").lower() #velge ut hvilken buss man vil ha ifra json fil listen
     for buss in busses:
         if valgtBuss == buss["bussNavn"].lower():
             if bruker["antallPassasjerer"] > buss["antallSeter"]:
-                print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.")
+                print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.") #hvis det er for mange folk for bussen
                 return
 
             bruker["valgtBuss"] = buss["bussNavn"]
-            bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"]
-
-            for buss in busses:
-                if(valgtBuss.lower() == buss["bussNavn"].lower()):
-                    if(buss["ledig"] == False):
-                        busses["bussID"] = buss["ID"]
-                        for buss in busses:
-                            if buss["bussNavn"] == valgtBuss:
-                                buss["ledig"] = False
-                                
+            bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"] #utregning av total prisen
+            buss["ledig"] = False #sier at bussen har blitt bestillt
             break
+
     else:
         print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
         return
 
+    #Oppdater JSON-filene
     brukere.append(bruker)
     dumpJson(brukere, "Bussbilletter/billetter.json")
+    dumpJson(busses, "Bussbilletter/busses.json")
     print(f"Bestilling for {bruker['fornavn']} {bruker['etternavn']} er lagt til!")
 
 
 #funksjon for å legge til busser
 def leggeTilBuss():
     buss = {
-        "bussNavn": input("skriv inn navn på bussen: "),
-        "bussID": str(uuid.uuid4()),
-        "antallSeter": input("skriv antall passasjerer: "),
-        "ledig": True,
-        "pris": input("prisen på bussen: "),
+        "bussNavn": input("skriv inn navn på bussen: "), #navn
+        "bussID": str(uuid.uuid4()), #id til bussen
+        "antallSeter": input("skriv antall passasjerer: "), #sier hvor mange folk passer i en buss
+        "ledig": True, #viser om man kan bruke bussen, eller om den er allerede bestillt
+        "pris": input("prisen på bussen: "), #bussprisen per døgn
         }
+    #Oppdater JSON-filene
     busses.append(buss)
     dumpJson(busses, "bussbestilling/busses.json")
 
@@ -78,36 +75,42 @@ def All_Busses():
 #funksjon til å list ut alle bestillingene
 def All_Orders():
     for bruker in brukere:
-        print(bruker["firstname"])
-    for buss in busses:
-        print(buss["bussNavn"])
+        print(bruker["valgtBuss"])
 
 
-#funksjon for å avslutte en busstur
+#funksjon for å avslutte en busstur og slette bestillingen
 def Fullføre_Bestilling():
-    bussName = input("Navn på bestillingen: ")
-    buss = None
+    bussNavn = input("Navn på bussen: ").lower()
+    bussFunnet = False
 
-    for cur_buss in brukere:
-        if(bussName == cur_buss["navn"]):
-            buss = cur_buss
+    #Oppdater bussens status til ledig
+    for buss in busses:
+        if buss["bussNavn"].lower() == bussNavn:
+            buss["ledig"] = True
+            bussFunnet = True
+            print(f"Bussen '{buss['bussNavn']}' er nå satt som ledig.")
             break
 
-    if buss == None:
-        print("Bussen finnes ikke")
+    if not bussFunnet:
+        print("Ingen buss med det navnet ble funnet i systemet.")
         return
 
-    count = 0
-    for buss in brukere:
-        print(count)
-        if(buss["ID"] == buss["bussId"]):
-            brukere.pop(count)
-            dumpJson(brukere, "Bussbilletter/billetter.json")
+    #Fjern tilknyttet bestilling
+    bestillingFunnet = False
+    for bruker in brukere[:]:  #Lager en kopi av listen for sikker sletting
+        if bruker["valgtBuss"].lower() == bussNavn:
+            brukere.remove(bruker)
+            bestillingFunnet = True
+            print(f"Bestillingen for {bruker['fornavn']} {bruker['etternavn']} er slettet.")
             break
-        count += 1    
 
-    buss["bestillt"] = None
+    if not bestillingFunnet:
+        print("Ingen bestillinger ble funnet for denne bussen.")
+
+    #Oppdater JSON-filene
     dumpJson(brukere, "Bussbilletter/billetter.json")
+    dumpJson(busses, "Bussbilletter/busses.json")
+    print("Bestillingen er fullført og slettet")
 
 #menu
 def menu():
