@@ -1,14 +1,24 @@
 [
     {
-        "firstname": "Odin",
-        "lastname": "Johansen",
-        "antallPassasjere": 5,
-        "antallDager": 8,
-        "KmPris": 18100,
-        "BestillingsDato": "Thu Dec  5 13:11:22 2024",
-        "ValgtBuss": null,
-        "Fullf\u00f8rtBestilling": false,
-        "TotalPris": null,
-        "valgtBuss": "Peter"
+        "fornavn": "mm",
+        "etternavn": "mm",
+        "antallPassasjerer": 6,
+        "antallDagerLeie": 23,
+        "totalDistanse": 22,
+        "valgtBuss": "Albert",
+        "totalpris": 30730,
+        "turFullf\u00f8rt": false,
+        "datoForBestilling": "Thu Dec  5 13:54:16 2024"
+    },
+    {
+        "fornavn": "x",
+        "etternavn": "x",
+        "antallPassasjerer": 12,
+        "antallDagerLeie": 23,
+        "totalDistanse": 100,
+        "valgtBuss": "Spiderman",
+        "totalpris": 45800,
+        "turFullf\u00f8rt": false,
+        "datoForBestilling": "Thu Dec  5 13:56:08 2024"
     }
 ]

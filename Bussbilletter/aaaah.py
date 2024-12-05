@@ -18,26 +18,35 @@ busses = loadJson("Bussbilletter/busses.json")
 #funksjon for bestilling
 def bestill():
     bruker = {
-        "firstname": input("skriv inn fornavn: "), #fornavn
-        "lastname": input("skriv inn etternavn: "), #etternavn
-        "antallPassasjere": int(input("skriv inn antall passasjerer: ")), #Passasjerer
-        "antallDager": int(input("skriv inn antall dager bussen kommer til å bli brukt: ")), #dagesgebyr
-        "KmPris": int(input("hvor langt skal bussen kjøre? skriv i km: ")), #km gebyr
-        "BestillingsDato": datetime.datetime.now().strftime("%c"), #dato og klokkeslettet
-        "ValgtBuss": None,
-        "FullførtBestilling": False,
-        "TotalPris": None,
+        "fornavn": input("Skriv fornavnet ditt her: "),
+        "etternavn": input("Skriv etternavnet ditt her: "),
+        "antallPassasjerer": int(input("Skriv antall passasjerer: ")),
+        "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")),
+        "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")),
+        "valgtBuss": None,
+        "totalpris": None,
+        "turFullført": False,
+        "datoForBestilling": datetime.datetime.now().strftime("%c")
     }
 
     valgtBuss = input("Velg en buss (skriv navnet): ").lower()
     for buss in busses:
         if valgtBuss == buss["bussNavn"].lower():
-            if bruker["antallPassasjere"] > buss["antallSeter"]:
+            if bruker["antallPassasjerer"] > buss["antallSeter"]:
                 print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.")
                 return
 
             bruker["valgtBuss"] = buss["bussNavn"]
-            bruker["KmPris"] = int(buss["pris"]) * bruker["antallDager"] + 90 * bruker["KmPris"]
+            bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"]
+
+            for buss in busses:
+                if(valgtBuss.lower() == buss["bussNavn"].lower()):
+                    if(buss["ledig"] == False):
+                        busses["bussID"] = buss["ID"]
+                        for buss in busses:
+                            if buss["bussNavn"] == valgtBuss:
+                                buss["ledig"] = False
+                                
             break
     else:
         print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
@@ -45,7 +54,7 @@ def bestill():
 
     brukere.append(bruker)
     dumpJson(brukere, "Bussbilletter/billetter.json")
-    print(f"Bestilling for {bruker['firstname']} {bruker['lastname']} er lagt til!")
+    print(f"Bestilling for {bruker['fornavn']} {bruker['etternavn']} er lagt til!")
 
 
 #funksjon for å legge til busser
@@ -61,7 +70,19 @@ def leggeTilBuss():
     dumpJson(busses, "bussbestilling/busses.json")
 
 
-#funksjon for list ut bestillingene
+#funksjon for list alle busser
+def All_Busses():
+    for buss in busses:
+        print(buss["bussNavn"])
+    
+#funksjon til å list ut alle bestillingene
+def All_Orders():
+    for bruker in brukere:
+        print(bruker["firstname"])
+    for buss in busses:
+        print(buss["bussNavn"])
+
+
 #funksjon for å avslutte en busstur
 def Fullføre_Bestilling():
     bussName = input("Navn på bestillingen: ")
@@ -95,6 +116,7 @@ def menu():
     print("1. Bestille en busstur")
     print("2. List ut alle bestillte bussturer")
     print("3. Fullføre eller slette en bestilling")
+    print("4. Se alle Busser")
     print("0. Slutt programmet")
     valg = input("velg noe ifra menyen: ")
     return valg
@@ -108,9 +130,11 @@ def main():
         if (mittvalg == "1"):
             bestill()
         elif (mittvalg == "2"):
-            pass
+            All_Orders()
         elif (mittvalg == "3"):
             Fullføre_Bestilling()
+        elif (mittvalg == "4"):
+            All_Busses()
         elif (mittvalg == "0"):
             run = False
         else:
