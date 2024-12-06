@@ -71,7 +71,7 @@ def leggeTilBuss():
         }
     #Oppdater JSON-filene
     busses.append(buss)
-    dumpJson(busses, "bussbestilling/busses.json")
+    dumpJson(busses, "Bussbilletter/busses.json")
 
 
 #funksjon for list alle busser
