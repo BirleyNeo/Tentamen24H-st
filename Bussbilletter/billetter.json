@@ -9,5 +9,16 @@
         "totalpris": 33250,
         "turFullf\u00f8rt": false,
         "datoForBestilling": "Thu Dec  5 14:12:11 2024"
+    },
+    {
+        "fornavn": "Iris",
+        "etternavn": "Kozachuk",
+        "antallPassasjerer": 5,
+        "antallDagerLeie": 7,
+        "totalDistanse": 90,
+        "valgtBuss": "Peter",
+        "totalpris": 16850,
+        "turFullf\u00f8rt": false,
+        "datoForBestilling": "Fri Dec  6 10:27:31 2024"
     }
 ]

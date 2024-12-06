@@ -25,7 +25,7 @@ def bestill():
             "antallPassasjerer": int(input("Skriv antall passasjerer: ")), #hvor mange folk skal gå i bussen
             "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")), #hvor mange dager bussen kommer til å bli brukt
             "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")), #hvor langt bussen trenger å kjøre, til å finne prisen per km
-            "valgtBuss": None, #bussen man kommer å velge ut (forskjellige seter, ...)
+            "valgtBuss": None, #bussen man kommer å velge ut (forskjellige seter, priser, ...)
             "totalpris": None, #prisen usern trenger å betale; regner ut km-prisen og prisen per dagen
             "turFullført": False, #om turen har blitt gjort eller ikke
             "datoForBestilling": datetime.datetime.now().strftime("%c") #når tid bestilling ble bestillt
@@ -39,11 +39,16 @@ def bestill():
 
                 bruker["valgtBuss"] = buss["bussNavn"]
                 bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"] #utregning av total prisen
-                buss["ledig"] = False #sier at bussen har blitt bestillt
+                if(buss["ledig"] == True): #sjekker om bussen er bestillt eller ikke
+                    buss["ledig"] = False #sier at bussen har blitt bestillt
+                elif(buss["ledig"] == False): #hva den må gjøre hvis bussen er ikke ledig
+                    print("Bussen er ikke tilgjengelig! Prøv en annen buss.")
+                    return
                 break
             else:
                 print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
                 return
+        
     #Når man ikke skriver inn rett, kommer denne feil koden
     except:
         print("Det oppstå en feil, prøv på nytt!")
