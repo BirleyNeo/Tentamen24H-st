@@ -18,33 +18,35 @@ busses = loadJson("Bussbilletter/busses.json")
 
 #funksjon for bestilling
 def bestill():
-    bruker = {
-        "fornavn": input("Skriv fornavnet ditt her: "),
-        "etternavn": input("Skriv etternavnet ditt her: "),
-        "antallPassasjerer": int(input("Skriv antall passasjerer: ")), #hvor mange folk skal gå i bussen
-        "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")), #hvor mange dager bussen kommer til å bli brukt
-        "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")), #hvor langt bussen trenger å kjøre, til å finne prisen per km
-        "valgtBuss": None, #bussen man kommer å velge ut (forskjellige seter, ...)
-        "totalpris": None, #prisen usern trenger å betale; regner ut km-prisen og prisen per dagen
-        "turFullført": False, #om turen har blitt gjort eller ikke
-        "datoForBestilling": datetime.datetime.now().strftime("%c") #når tid bestilling ble bestillt
-    }
+    try:
+        bruker = {
+            "fornavn": input("Skriv fornavnet ditt her: "),
+            "etternavn": input("Skriv etternavnet ditt her: "),
+            "antallPassasjerer": int(input("Skriv antall passasjerer: ")), #hvor mange folk skal gå i bussen
+            "antallDagerLeie": int(input("Skriv antall dager bussen skal leies: ")), #hvor mange dager bussen kommer til å bli brukt
+            "totalDistanse": int(input("Skriv distanse av turen her i kilometer: ")), #hvor langt bussen trenger å kjøre, til å finne prisen per km
+            "valgtBuss": None, #bussen man kommer å velge ut (forskjellige seter, ...)
+            "totalpris": None, #prisen usern trenger å betale; regner ut km-prisen og prisen per dagen
+            "turFullført": False, #om turen har blitt gjort eller ikke
+            "datoForBestilling": datetime.datetime.now().strftime("%c") #når tid bestilling ble bestillt
+        }
+        valgtBuss = input("Velg en buss (skriv navnet): ").lower() #velge ut hvilken buss man vil ha ifra json fil listen
+        for buss in busses:
+            if valgtBuss == buss["bussNavn"].lower():
+                if bruker["antallPassasjerer"] > buss["antallSeter"]:
+                    print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.") #hvis det er for mange folk for bussen
+                    return
 
-    valgtBuss = input("Velg en buss (skriv navnet): ").lower() #velge ut hvilken buss man vil ha ifra json fil listen
-    for buss in busses:
-        if valgtBuss == buss["bussNavn"].lower():
-            if bruker["antallPassasjerer"] > buss["antallSeter"]:
-                print(f"Bussen {buss['bussNavn']} har ikke nok seter. Bestillingen ble ikke fullført.") #hvis det er for mange folk for bussen
+                bruker["valgtBuss"] = buss["bussNavn"]
+                bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"] #utregning av total prisen
+                buss["ledig"] = False #sier at bussen har blitt bestillt
+                break
+            else:
+                print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
                 return
-
-            bruker["valgtBuss"] = buss["bussNavn"]
-            bruker["totalpris"] = int(buss["pris"]) * bruker["antallDagerLeie"] + 90 * bruker["totalDistanse"] #utregning av total prisen
-            buss["ledig"] = False #sier at bussen har blitt bestillt
-            break
-
-    else:
-        print("Ugyldig bussvalg. Bestillingen ble ikke fullført.")
-        return
+    #Når man ikke skriver inn rett, kommer denne feil koden
+    except:
+        print("Det oppstå en feil, prøv på nytt!")
 
     #Oppdater JSON-filene
     brukere.append(bruker)
@@ -112,15 +114,22 @@ def Fullføre_Bestilling():
     dumpJson(busses, "Bussbilletter/busses.json")
     print("Bestillingen er fullført og slettet")
 
+#funksjon til å bestemme mellomrom
+def mellomrom(num):
+    for x in range(num):
+        print("")
+
 #menu
 def menu():
+    mellomrom(2)
     print("----- User Menu -----")
-    print("---------------------")
+    mellomrom(1)
     print("1. Bestille en busstur")
     print("2. List ut alle bestillte bussturer")
     print("3. Fullføre eller slette en bestilling")
     print("4. Se alle Busser")
     print("0. Slutt programmet")
+    mellomrom(1)
     valg = input("velg noe ifra menyen: ")
     return valg
 
