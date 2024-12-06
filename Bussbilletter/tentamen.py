@@ -92,9 +92,9 @@ def Fullføre_Bestilling():
 
     #Oppdater bussens status til ledig
     for buss in busses:
-        if buss["bussNavn"].lower() == bussNavn:
-            buss["ledig"] = True
+        if buss["bussNavn"].lower() == bussNavn and buss["ledig"] == False:
             bussFunnet = True
+            buss["ledig"] = True
             print(f"Bussen '{buss['bussNavn']}' er nå satt som ledig.")
             break
 
@@ -108,7 +108,7 @@ def Fullføre_Bestilling():
         if bruker["valgtBuss"].lower() == bussNavn:
             brukere.remove(bruker)
             bestillingFunnet = True
-            print(f"Bestillingen for {bruker['fornavn']} {bruker['etternavn']} er slettet.")
+            print(f"Bestillingen for {bruker['fornavn']} {bruker['etternavn']} er fullført/slettet.")
             break
 
     if not bestillingFunnet:
@@ -117,7 +117,6 @@ def Fullføre_Bestilling():
     #Oppdater JSON-filene
     dumpJson(brukere, "Bussbilletter/billetter.json")
     dumpJson(busses, "Bussbilletter/busses.json")
-    print("Bestillingen er fullført og slettet")
 
 #funksjon til å bestemme mellomrom
 def mellomrom(num):

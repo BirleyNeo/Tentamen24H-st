@@ -3,7 +3,7 @@
         "bussNavn": "Peter",
         "bussID": "2c8dcbda-1b3d-44ef-a042-19750b61573f",
         "antallSeter": 7,
-        "ledig": false,
+        "ledig": true,
         "pris": "1250"
     },
     {
